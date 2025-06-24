@@ -48,6 +48,17 @@ For your second milestone, explain what you've worked on since your previous mil
 <iframe width="560" height="315" src="https://www.youtube.com/embed/CaCazFBhYKs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 For your first milestone, describe what your project is and how you plan to build it. You can include:
+
+The ball-tracking robot utilizes two mechanics - a camera and ultrasonic sensors - to evaluate the distance and color of objects through sonar detection and image processing, while sending voltage to its two motors that give it a full range of motion; in total, these functions work through implementing code that sends commands to the Raspberry Pi. 
+
+The current stage of my robot is that while its base/shell is constructed, I wired a Raspberry Pi to a motor driver module through female to male connectors via a breadboard in the middle, which, through code, allows me to control the movement of the robot's wheels. When running the code through VS Code, the robot remains at rest unless acted upon; therefore, I can write certain inputs into the terminal that give me full control of the robot's direction. Separately, I worked on flickering LED lights in order to test the functionality of my Raspberry Pi and deepen my knowledge on its process. 
+
+I've faced harsh technical challenges that required several hours of debugging in order to work around them. For instance, I struggled with establishing a connection between my Raspberry Pi and computer as a result of my computer's inability to connect to a network wirelessly. Therefore, I connected it to an ethernet cable; however, I couldn't find out which network it belonged to. Because the Raspberry Pi requires a wireless connection (rather than a wired one, which would not be sustainable for when I complete the robot), I manually logged into different networks through its desktop mode to test whether it could establish a connection. 
+
+My hope for this project is to expand beyond the blueprint and implement my own modifications to bring the robot to life. 
+
+
+
 - An explanation about the different components of your project and how they will all integrate together
 - Technical progress you've made so far
 - Challenges you're facing and solving in your future milestones
