@@ -29,7 +29,7 @@ After these three weeks, I am very satisfied with how the robot turned out.
 
   In the future, I hope to expand my knowledge on engineering, develop my skills, and seek electrical engineering in college.
 
-Testing the servos:
+*Testing the servos:*
 
 ```python
 
@@ -68,7 +68,7 @@ while True:
 
   Before my final milestone, now that it's prepared for a later modification, I will work on my modification and putting in my best effort to give life to my robot.
 
-Testing the sonars:
+*Testing the sonars:*
 
 ```python
 
@@ -119,7 +119,7 @@ for i in range(1,200):
 
 ```
 
-Testing the camera:
+*Testing the camera:*
 
 ```python
 
@@ -153,7 +153,7 @@ picam2.stop_recording()
 
   The current stage of my robot is that while its base/shell is constructed, I wired a Raspberry Pi to a motor driver module through female to male connectors via a breadboard in the middle, which, through code, allows me to control the movement of the robot's wheels. When running the code through VS Code, the robot remains at rest unless acted upon; therefore, I can write certain inputs into the terminal that give me full control of the robot's direction. Separately, I worked on flickering LED lights in order to test the functionality of my Raspberry Pi and deepen my knowledge on its process. 
 
-Testing the LEDs:
+*Testing the LEDs:*
 
 ```python
 
@@ -182,7 +182,7 @@ Testing the LEDs:
 
 ```
 
-Testing the motors:
+*Testing the motors:*
 
 ```python
 
