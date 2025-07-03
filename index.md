@@ -61,7 +61,7 @@ You should comment out all portions of your portfolio that you have not complete
 
 # Schematics 
 
-![Screenshot 2025-07-03 133130](https://github.com/user-attachments/assets/e93e210a-6a49-411a-a349-890bc4a049d1 | width 100)
+![Screenshot 2025-07-03 133130](https://github.com/user-attachments/assets/e93e210a-6a49-411a-a349-890bc4a049d1)
 
 Base foundation
 
