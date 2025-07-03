@@ -60,7 +60,12 @@ I've faced harsh technical challenges that required several hours of debugging i
 My hope for this project is to expand beyond the blueprint and implement my own modifications to bring the robot to life. 
 
 # Schematics 
-Here's where you'll put images of your schematics. [Tinkercad](https://www.tinkercad.com/blog/official-guide-to-tinkercad-circuits) and [Fritzing](https://fritzing.org/learning/) are both great resoruces to create professional schematic diagrams, though BSE recommends Tinkercad becuase it can be done easily and for free in the browser. 
+
+
+![Screenshot 2025-07-03 133205](https://github.com/user-attachments/assets/f7333f64-8649-4047-a288-508dd6124013)
+![Screenshot 2025-07-03 133142](https://github.com/user-attachments/assets/3839d2cd-ea21-49de-8103-2c415dcaa9a0)
+![Screenshot 2025-07-03 133130](https://github.com/user-attachments/assets/e93e210a-6a49-411a-a349-890bc4a049d1)
+![Screenshot 2025-07-03 133223](https://github.com/user-attachments/assets/7f494a91-536b-40ab-a532-1a2c3e6c1aed)
 
 # Code
 Here's where you'll put your code. The syntax below places it into a block of code. Follow the guide [here]([url](https://www.markdownguide.org/extended-syntax/)) to learn how to customize it to your project needs. 
