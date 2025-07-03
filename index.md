@@ -34,7 +34,11 @@ For your final milestone, explain the outcome of your project. Key details to in
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/u6oXDnZl3_4?si=SSVksMeUt7HxIbfF" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
+Since the last milestone, I've worked tirelessly on completing the baseline project and preparing for a later modification of a claw. Some aspects that I have added include installation and code for ultrasonic sonars and a raspberry pi camera. The sonars calculates the distance of objects in front of it in thousanths of a second; the pi camera updates a livestream in real time displaying what it sees, as well as tracking the appropiate shades of red, grouping the largest areas of red, and calculating the offset of the ball from the center of the frame.
 
+The hardest part: combining the sonars, camera, and motors together in one piece of code. The main aspects that included this were writing code to bring the robot to line up a few centimeters behind the ball, spin when the ball is not in sight, stop at unusual obstructions, turn to the side from where the ball was last, and, utimately, ensure smooth turns. The robot had a hard time centering the ball; the motors often overresponded to voltage and would overshoot, and the robot would infinitely sway side to side. After many experiments and iterations, I was able to overcome. The most surprising part of this project so far is how I have been able to persevere despite these challenges.
+
+Before my final milestone, now that it's prepared for a later modification, I will work on my modification and putting in my best effort to give life to my robot.
 
 For your second milestone, explain what you've worked on since your previous milestone. You can highlight:
 - Technical details of what you've accomplished and how they contribute to the final goal
@@ -48,7 +52,7 @@ For your second milestone, explain what you've worked on since your previous mil
 <iframe width="560" height="315" src="https://www.youtube.com/embed/D7zO6I78JUM?si=T224gci5G32yubB_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 
-The ball-tracking robot utilizes two mechanics - a camera and ultrasonic sensors - to evaluate the distance and color of objects through sonar detection and image processing, while sending voltage to its two motors that give it a full range of motion; in total, these functions work through implementing code that sends commands to the Raspberry Pi. 
+The ball-tracking robot utilizes two mechanics - a camera and ultrasonic sonars - to evaluate the distance and color of objects through sonar detection and image processing, while sending voltage to its two motors that give it a full range of motion; in total, these functions work through implementing code that sends commands to the Raspberry Pi. 
 
 The current stage of my robot is that while its base/shell is constructed, I wired a Raspberry Pi to a motor driver module through female to male connectors via a breadboard in the middle, which, through code, allows me to control the movement of the robot's wheels. When running the code through VS Code, the robot remains at rest unless acted upon; therefore, I can write certain inputs into the terminal that give me full control of the robot's direction. Separately, I worked on flickering LED lights in order to test the functionality of my Raspberry Pi and deepen my knowledge on its process. 
 
