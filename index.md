@@ -40,11 +40,6 @@ The hardest part: combining the sonars, camera, and motors together in one piece
 
 Before my final milestone, now that it's prepared for a later modification, I will work on my modification and putting in my best effort to give life to my robot.
 
-For your second milestone, explain what you've worked on since your previous milestone. You can highlight:
-- Technical details of what you've accomplished and how they contribute to the final goal
-- What has been surprising about the project so far
-- Previous challenges you faced that you overcame
-- What needs to be completed before your final milestone 
 
 # First Milestone
 
