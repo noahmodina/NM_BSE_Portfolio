@@ -22,15 +22,15 @@ You should comment out all portions of your portfolio that you have not complete
 <iframe width="560" height="315" src="https://www.youtube.com/embed/F7M7imOVGug" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 
-After these three weeks, the robot turned out exactly how I planned it from the beginning. 
+  After these three weeks, the robot turned out exactly how I planned it from the beginning. 
 
-Since the last milestone, I 3D modeled and printed the claw and shell of my robot, and attached it using tape. I used specific measurements to appropiately organize each part, and luckily, my first print allowed each part to fit seamlessly. Using SG90 servos, I embedded more code for the claw function, and together, the robot was able to grab the ball. For the final part, I inserted a flashlight; now it was able to work in the dark. 
+  Since the last milestone, I 3D modeled and printed the claw and shell of my robot, and attached it using tape. I used specific measurements to appropiately organize each part, and luckily, my first print allowed each part to fit seamlessly. Using SG90 servos, I embedded more code for the claw function, and together, the robot was able to grab the ball. For the final part, I inserted a flashlight; now it was able to work in the dark. 
 
-My biggest challenges mainly included the coding aspect of the project. It was a steep learning curve of working with the raspberry pi and electrical devices through code mostly by myself, as I had to experiment and research countless times. My biggest triumph was giving life to my robot; I was able to apply my own skills and create something that I am proud of.
+  My biggest challenges mainly included the coding aspect of the project. It was a steep learning curve of working with the raspberry pi and electrical devices through code mostly by myself, as I had to experiment and research countless times. My biggest triumph was giving life to my robot; I was able to apply my own skills and create something that I am proud of.
 
-The main takeaways from the program were how many electrical devices - raspberry pi, breadboards, servos, motor drivers, ultrasonic sonars, and much more - and the code for running the robot work. I learned the importance of not giving up and learning from my mistakes to reiterate and improve.
+  The main takeaways from the program were how many electrical devices - raspberry pi, breadboards, servos, motor drivers, ultrasonic sonars, and much more - and the code for running the robot work. I learned the importance of not giving up and learning from my mistakes to reiterate and improve.
 
-In the future, I hope to expand my knowledge on engineering, develop my skills, and seek electrical engineering in college.
+  In the future, I hope to expand my knowledge on engineering, develop my skills, and seek electrical engineering in college.
 
 
 # Second Milestone
@@ -38,11 +38,11 @@ In the future, I hope to expand my knowledge on engineering, develop my skills, 
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/u6oXDnZl3_4?si=SSVksMeUt7HxIbfF" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-Since the last milestone, I've worked tirelessly on completing the baseline project and preparing for a later modification of a claw. Some aspects that I have added include installation and code for ultrasonic sonars and a raspberry pi camera. The sonars calculates the distance of objects in front of it in thousanths of a second; the pi camera updates a livestream in real time displaying what it sees, as well as tracking the appropiate shades of red, grouping the largest areas of red, and calculating the offset of the ball from the center of the frame.
+  Since the last milestone, I've worked tirelessly on completing the baseline project and preparing for a later modification of a claw. Some aspects that I have added include installation and code for ultrasonic sonars and a raspberry pi camera. The sonars calculates the distance of objects in front of it in thousanths of a second; the pi camera updates a livestream in real time displaying what it sees, as well as tracking the appropiate shades of red, grouping the largest areas of red, and calculating the offset of the ball from the center of the frame.
 
-The hardest part: combining the sonars, camera, and motors together in one piece of code. The main aspects that included this were writing code to bring the robot to line up a few centimeters behind the ball, spin when the ball is not in sight, stop at unusual obstructions, turn to the side from where the ball was last, and, utimately, ensure smooth turns. The robot had a hard time centering the ball; the motors often overresponded to voltage and would overshoot, and the robot would infinitely sway side to side. After many experiments and iterations, I was able to overcome. The most surprising part of this project so far is how I have been able to persevere despite these challenges.
+  The hardest part: combining the sonars, camera, and motors together in one piece of code. The main aspects that included this were writing code to bring the robot to line up a few centimeters behind the ball, spin when the ball is not in sight, stop at unusual obstructions, turn to the side from where the ball was last, and, utimately, ensure smooth turns. The robot had a hard time centering the ball; the motors often overresponded to voltage and would overshoot, and the robot would infinitely sway side to side. After many experiments and iterations, I was able to overcome. The most surprising part of this project so far is how I have been able to persevere despite these challenges.
 
-Before my final milestone, now that it's prepared for a later modification, I will work on my modification and putting in my best effort to give life to my robot.
+  Before my final milestone, now that it's prepared for a later modification, I will work on my modification and putting in my best effort to give life to my robot.
 
 
 # First Milestone
@@ -51,13 +51,13 @@ Before my final milestone, now that it's prepared for a later modification, I wi
 <iframe width="560" height="315" src="https://www.youtube.com/embed/D7zO6I78JUM?si=T224gci5G32yubB_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 
-The ball-tracking robot utilizes two mechanics - a camera and ultrasonic sonars - to evaluate the distance and color of objects through sonar detection and image processing, while sending voltage to its two motors that give it a full range of motion; in total, these functions work through implementing code that sends commands to the Raspberry Pi. 
+  The ball-tracking robot utilizes two mechanics - a camera and ultrasonic sonars - to evaluate the distance and color of objects through sonar detection and image processing, while sending voltage to its two motors that give it a full range of motion; in total, these functions work through implementing code that sends commands to the Raspberry Pi. 
 
-The current stage of my robot is that while its base/shell is constructed, I wired a Raspberry Pi to a motor driver module through female to male connectors via a breadboard in the middle, which, through code, allows me to control the movement of the robot's wheels. When running the code through VS Code, the robot remains at rest unless acted upon; therefore, I can write certain inputs into the terminal that give me full control of the robot's direction. Separately, I worked on flickering LED lights in order to test the functionality of my Raspberry Pi and deepen my knowledge on its process. 
+  The current stage of my robot is that while its base/shell is constructed, I wired a Raspberry Pi to a motor driver module through female to male connectors via a breadboard in the middle, which, through code, allows me to control the movement of the robot's wheels. When running the code through VS Code, the robot remains at rest unless acted upon; therefore, I can write certain inputs into the terminal that give me full control of the robot's direction. Separately, I worked on flickering LED lights in order to test the functionality of my Raspberry Pi and deepen my knowledge on its process. 
 
-I've faced harsh technical challenges that required several hours of debugging in order to work around them. For instance, I struggled with establishing a connection between my Raspberry Pi and computer as a result of my computer's inability to connect to a network wirelessly. Therefore, I connected it to an ethernet cable; however, I couldn't find out which network it belonged to. Because the Raspberry Pi requires a wireless connection (rather than a wired one, which would not be sustainable for when I complete the robot), I manually logged into different networks through its desktop mode to test whether it could establish a connection. 
+  I've faced harsh technical challenges that required several hours of debugging in order to work around them. For instance, I struggled with establishing a connection between my Raspberry Pi and computer as a result of my computer's inability to connect to a network wirelessly. Therefore, I connected it to an ethernet cable; however, I couldn't find out which network it belonged to. Because the Raspberry Pi requires a wireless connection (rather than a wired one, which would not be sustainable for when I complete the robot), I manually logged into different networks through its desktop mode to test whether it could establish a connection. 
 
-My hope for this project is to expand beyond the blueprint and implement my own modifications to bring the robot to life. 
+  My hope for this project is to expand beyond the blueprint and implement my own modifications to bring the robot to life. 
 
 # Schematics 
 
