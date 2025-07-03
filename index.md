@@ -21,12 +21,16 @@ You should comment out all portions of your portfolio that you have not complete
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/F7M7imOVGug" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-For your final milestone, explain the outcome of your project. Key details to include are:
-- What you've accomplished since your previous milestone
-- What your biggest challenges and triumphs were at BSE
-- A summary of key topics you learned about
-- What you hope to learn in the future after everything you've learned at BSE
 
+After these three weeks, the robot turned out exactly how I planned it from the beginning. 
+
+Since the last milestone, I 3D modeled and printed the claw and shell of my robot, and attached it using tape. I used specific measurements to appropiately organize each part, and luckily, my first print allowed each part to fit seamlessly. Using SG90 servos, I embedded more code for the claw function, and together, the robot was able to grab the ball. For the final part, I inserted a flashlight; now it was able to work in the dark. 
+
+My biggest challenges mainly included the coding aspect of the project. It was a steep learning curve of working with the raspberry pi and electrical devices through code mostly by myself, as I had to experiment and research countless times. My biggest triumph was giving life to my robot; I was able to apply my own skills and create something that I am proud of.
+
+The main takeaways from the program were how many electrical devices - raspberry pi, breadboards, servos, motor drivers, ultrasonic sonars, and much more - and the code for running the robot work. I learned the importance of not giving up and learning from my mistakes to reiterate and improve.
+
+In the future, I hope to expand my knowledge on engineering, develop my skills, and seek electrical engineering in college.
 
 
 # Second Milestone
