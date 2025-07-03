@@ -1,9 +1,12 @@
 # Ball Tracking Robot
-I made a Catmobile. Powered by Raspberry Pi and Python, it uses a camera, ultrasonic sensors, motor drivers, motors, and servos to autonomously navigate through obstacles with ease and get to the red ball, even in the dark - and when it's there, it holds onto it! Not only is this smart robot made to the highest efficiency, it's designed to emulate a batmobile but as a cat instead.
+```python
+I made a Catmobile.
 
-```HTML 
-<!--- This is an HTML comment in Markdown -->
-<!--- Anything between these symbols will not render on the published site -->
+Powered by Raspberry Pi and Python,
+it uses a camera, ultrasonic sensors, motor drivers, motors, and servos to autonomously
+navigate through obstacles with ease and get to the red ball, even in the dark - and when it's there,
+it holds onto it! Not only is this smart robot made to the highest efficiency,
+it's designed to emulate a batmobile but as a cat instead.
 ```
 
 | **Engineer** | **School** | **Area of Interest** | **Grade** |
@@ -305,7 +308,6 @@ Claw
 ```
 
 # Final Code
-Here's where you'll put your code. The syntax below places it into a block of code. Follow the guide [here]([url](https://www.markdownguide.org/extended-syntax/)) to learn how to customize it to your project needs. 
 
 ```python
 
