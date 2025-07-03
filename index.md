@@ -78,315 +78,315 @@ Claw
 Here's where you'll put your code. The syntax below places it into a block of code. Follow the guide [here]([url](https://www.markdownguide.org/extended-syntax/)) to learn how to customize it to your project needs. 
 
 ```from flask import Flask, Response, render_template_string
-from picamera2 import Picamera2
-from datetime import datetime
-import RPi.GPIO as GPIO
-import pigpio
-import time
-import cv2
-import numpy as np
-
-#Marks which side the ball was seen last
-marker = 0
-
-# Define GPIO pins for motor
-# LMC - Left Motor clockwise, RMCC - Right Motor Counter-cloclwise
-LMCC = 15
-LMC = 20
-RMCC = 6
-RMC = 19
-
-# Define GPIO pins for ultrasonic sensors
-Echo1 = 26
-Trigger1 = 21
-Echo2 = 2
-Trigger2 = 3
-Echo3 = 9
-Trigger3 = 10
-
-# Define GPIO pins for servos
-RC = 16
-LC = 12
-pi = pigpio.pi()
-
-#Set up Picamera settings
-app = Flask(__name__)
-picam = Picamera2()
-picam.configure(picam.create_preview_configuration(main={"format":"BGR888", "size": (640, 480)}))
-picam.start()
-FRAME_WIDTH = 640
-CENTER_X = FRAME_WIDTH // 2
-
-#Turn motors off
-GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False)
-for pin in [LMCC, LMC, RMCC, RMC]:
-    GPIO.setup(pin, GPIO.OUT)
-
-# PWM at 100 Hz
-PWM1A = GPIO.PWM(LMCC, 100)
-PWM1B = GPIO.PWM(LMC, 100)
-PWM2A = GPIO.PWM(RMCC, 100)
-PWM2B = GPIO.PWM(RMC, 100)
-
-PWM1A.start(0)
-PWM1B.start(0)
-PWM2A.start(0)
-PWM2B.start(0)
-
-
-def RMforward(speed=100):
-    PWM1A.ChangeDutyCycle(0)
-    PWM1B.ChangeDutyCycle(speed)
-
-def RMbackward(speed=100):
-    PWM1A.ChangeDutyCycle(speed)
-    PWM1B.ChangeDutyCycle(0)
-
-def LMforward(speed=100):
-    PWM2A.ChangeDutyCycle(0)
-    PWM2B.ChangeDutyCycle(speed)
-
-def LMbackward(speed=100):
-    PWM2A.ChangeDutyCycle(speed)
-    PWM2B.ChangeDutyCycle(0)
-
-def stop():
-    for pwm in [PWM1A, PWM1B, PWM2A, PWM2B]:
-        pwm.ChangeDutyCycle(0)
-
-#Function to read distance from ultrasonic sensors
-def sonar (GPIO_Trigger,GPIO_ECHO):
-    #Define variables
-    start=0
-    stop=0
-    distance = 1000
-
-    #Set GPIO pins
-    GPIO.setup(GPIO_Trigger, GPIO.OUT)
-
-    GPIO.setup(GPIO_ECHO, GPIO.IN)
-
-    #Turn off the trigger
-    GPIO.output(GPIO_Trigger, False)
-    time.sleep(0.01)
-
-    while distance > 5:
-        #Ultrasonic sensor sends a signal
-        GPIO.output(GPIO_Trigger, True)
-        time.sleep(0.00001)
-        GPIO.output(GPIO_Trigger, False)
-        #Variable for current time
-        begin = time.time()
-        #Measuring the start - when the signal is sent
-        while GPIO.input(GPIO_ECHO) == 0 and time.time()<begin+0.05:
-            start = time.time()
-        #Measuring the stop - when the echo from the signal is received
-        while GPIO.input(GPIO_ECHO) == 1 and time.time()<start+0.1:
-            stop = time.time()
-        #Calculate the distance
-        elapsed = stop - start
-        distance = elapsed * 34000/2
-        return distance
-
-def claw():
-    print("3. Grab")
-    pi.set_servo_pulsewidth(LC, 1100)
-    pi.set_servo_pulsewidth(RC, 2000)
-    time.sleep(2)
-    pi.set_servo_pulsewidth(LC, 2000)
-    pi.set_servo_pulsewidth(RC, 1100)
-
-#Function to move the car every thousandth of a second
-def drive(offset, area):
-    #distance from right ultrasonic sensor
-    distanceR = sonar(Trigger1, Echo1)
-    #distance from left ultrasonic sensor
-    distanceL = sonar(Trigger2, Echo2)
-    #distance from front ultrasonic sensor
-    distanceF = sonar(Trigger3, Echo3)
-
-    global marker
-
-    if(area < 5000):
-        print("0. Looking")
-        if (marker <= 0):
-            RMforward(30.8)
-            LMbackward(30.8)
-            time.sleep(0.0001)
-            print("i turn left now")
-        elif (marker > 0):
-            RMbackward(30.8)
-            LMforward(30.8)
-            time.sleep(0.0001)
-            print("i turn right now")
-        return
-    else:
-        print("1. Object found")
-        if distanceR > 20 and distanceL > 20 and distanceF > 20:
-            #print("DRIVE MODE ENABLED")
-            if(offset>50):
-                RMforward(40)
-                LMforward(40)
-                time.sleep(0.0001)
-                RMforward(30)
-                LMforward(40)
-                time.sleep(0.0001)
-                RMforward(30)
-                LMforward(45)
-                time.sleep(0.0001)
-                #print("RIGHT")
-            elif(offset<-50):
-                RMforward(40)
-                LMforward(40)
-                time.sleep(0.0001)
-                RMforward(40)
-                LMforward(30)
-                time.sleep(0.0001)
-                RMforward(45)
-                LMforward(30)
-                time.sleep(0.0001)
-                #print("LEFT")
-            elif(offset != 0):
-                LMforward(30)
-                RMforward(30)
-                time.sleep(0.0001)
-                #print("FORWARD")
-            else:
-                stop()
-                #print("STOP")
-        elif (distanceL <= 20 or distanceR <= 20):   
-            if (area > 3000):
-                print("Extra: Backing up")
-                if (distanceL > 20):
-                    RMbackward(20)
-                    LMbackward(20)
-                    time.sleep(0.0002)
-                    RMbackward(40)
-                    LMbackward(40)
-                    time.sleep(0.0003)
-                    RMbackward(50)
-                    LMbackward(40)
-                    time.sleep(0.0001)
-                    RMbackward(60)
-                    LMbackward(40)
-                    time.sleep(0.0001)
-                
-                elif (distanceR > 20):
-                    RMbackward(20)
-                    LMbackward(20)
-                    time.sleep(0.0002)
-                    RMbackward(40)
-                    LMbackward(40)
-                    time.sleep(0.0003)
-                    RMbackward(40)
-                    LMbackward(50)
-                    time.sleep(0.0001)
-                    RMbackward(40)
-                    LMbackward(60)
-                    time.sleep(0.0001)
-                
-            else:
-                print("Wait for procedure")
-                stop()
-        elif(distanceL > 20 and  distanceF < 8 and distanceR > 20):
-            print("2. In optimal position")
-            print("right: ", distanceR)
-            print("front: ", distanceF)
-            print("left: ", distanceL)
-            stop()
-            claw()
-        elif(8 < distanceF < 20):
-            print("Extra: Just a little closer")
-            LMforward(35)
-            RMforward(35)
-            time.sleep(0.0001)
-
-        marker = offset
-    return
-
-#Function to find red (and its area) in frame and set up website visuals
-def track_object(frame):
-    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    lower_red1 = np.array([0,100,30])
-    upper_red1 = np.array([10,255,255])
-    lower_red2 = np.array([160, 100, 30])
-    upper_red2 = np.array([179, 255, 255])
-
-    mask1 = cv2.inRange(hsv, lower_red1, upper_red1)
-    mask2 = cv2.inRange(hsv, lower_red2, upper_red2)
-    mask = cv2.bitwise_or(mask1, mask2)
-
-    mask = cv2.erode(mask, None, iterations=2)
-    mask = cv2.dilate(mask, None, iterations=2)
-
-    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
-    offsetPos = 0
-    global area
-    area = 0
-
-    if contours:
-        area = cv2.contourArea(max(contours, key=cv2.contourArea))
-        largest = max(contours, key=cv2.contourArea)
-        M = cv2.moments(largest)
-        if M["m00"] > 0:
-            centre_x = int(M["m10"] / M["m00"])
-            centre_y = int(M["m01"] / M["m00"])
-            offset = centre_x - CENTER_X
-            offsetPos = offset
-
-            if abs(offset) < 30:
-                position = "Centered"
-            elif offset < 0:
-                position = "Left"
-            else:
-                position = "Right"
-
-            cv2.drawContours(frame, [largest], -1, (0, 255, 0), 2)
-            cv2.circle(frame, (centre_x, centre_y), 5, (255, 0, 0), -1)
-            cv2.putText(frame, f"Offset: {offset}({position})", (10, 30), 
-            cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
-    return frame, offsetPos, area
-
-#Function to generate frames for the video stream
-def generate_frames():
-    while True:
-        frame = picam.capture_array()
-        frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
-        frame, offset, area = track_object(frame)
-
-        drive(offset, area)
-
-        ret, buffer = cv2.imencode('.jpg', frame)
-        jpg_frame = buffer.tobytes()
-        yield (b'--frame\r\n'
-                b'Content-Type: image/jpeg\r\n'
-                b'Content-Length: ' + f"{len(jpg_frame)}".encode() 
-                + b'\r\n\r\n' + 
-                jpg_frame + b'\r\n')
-
-#Setting up web browser via HTML
-@app.route('/')
-def index():
-        return render_template_string('''
-        <html>
-            <head><title>Red Ball Tracking Stream</title></head>
-            <body>
-                <h2>Live Tracking</h2>
-                <img src="/video_feed">
-            </body>
-        </html>
-        ''')
-
-#Function to handle video feed AND robot functions
-@app.route('/video_feed')
-def video_feed():
-    return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
-
-GPIO.cleanup()
+  from picamera2 import Picamera2
+  from datetime import datetime
+  import RPi.GPIO as GPIO
+  import pigpio
+  import time
+  import cv2
+  import numpy as np
+  
+  #Marks which side the ball was seen last
+  marker = 0
+  
+  # Define GPIO pins for motor
+  # LMC - Left Motor clockwise, RMCC - Right Motor Counter-cloclwise
+  LMCC = 15
+  LMC = 20
+  RMCC = 6
+  RMC = 19
+  
+  # Define GPIO pins for ultrasonic sensors
+  Echo1 = 26
+  Trigger1 = 21
+  Echo2 = 2
+  Trigger2 = 3
+  Echo3 = 9
+  Trigger3 = 10
+  
+  # Define GPIO pins for servos
+  RC = 16
+  LC = 12
+  pi = pigpio.pi()
+  
+  #Set up Picamera settings
+  app = Flask(__name__)
+  picam = Picamera2()
+  picam.configure(picam.create_preview_configuration(main={"format":"BGR888", "size": (640, 480)}))
+  picam.start()
+  FRAME_WIDTH = 640
+  CENTER_X = FRAME_WIDTH // 2
+  
+  #Turn motors off
+  GPIO.setmode(GPIO.BCM)
+  GPIO.setwarnings(False)
+  for pin in [LMCC, LMC, RMCC, RMC]:
+      GPIO.setup(pin, GPIO.OUT)
+  
+  # PWM at 100 Hz
+  PWM1A = GPIO.PWM(LMCC, 100)
+  PWM1B = GPIO.PWM(LMC, 100)
+  PWM2A = GPIO.PWM(RMCC, 100)
+  PWM2B = GPIO.PWM(RMC, 100)
+  
+  PWM1A.start(0)
+  PWM1B.start(0)
+  PWM2A.start(0)
+  PWM2B.start(0)
+  
+  
+  def RMforward(speed=100):
+      PWM1A.ChangeDutyCycle(0)
+      PWM1B.ChangeDutyCycle(speed)
+  
+  def RMbackward(speed=100):
+      PWM1A.ChangeDutyCycle(speed)
+      PWM1B.ChangeDutyCycle(0)
+  
+  def LMforward(speed=100):
+      PWM2A.ChangeDutyCycle(0)
+      PWM2B.ChangeDutyCycle(speed)
+  
+  def LMbackward(speed=100):
+      PWM2A.ChangeDutyCycle(speed)
+      PWM2B.ChangeDutyCycle(0)
+  
+  def stop():
+      for pwm in [PWM1A, PWM1B, PWM2A, PWM2B]:
+          pwm.ChangeDutyCycle(0)
+  
+  #Function to read distance from ultrasonic sensors
+  def sonar (GPIO_Trigger,GPIO_ECHO):
+      #Define variables
+      start=0
+      stop=0
+      distance = 1000
+  
+      #Set GPIO pins
+      GPIO.setup(GPIO_Trigger, GPIO.OUT)
+  
+      GPIO.setup(GPIO_ECHO, GPIO.IN)
+  
+      #Turn off the trigger
+      GPIO.output(GPIO_Trigger, False)
+      time.sleep(0.01)
+  
+      while distance > 5:
+          #Ultrasonic sensor sends a signal
+          GPIO.output(GPIO_Trigger, True)
+          time.sleep(0.00001)
+          GPIO.output(GPIO_Trigger, False)
+          #Variable for current time
+          begin = time.time()
+          #Measuring the start - when the signal is sent
+          while GPIO.input(GPIO_ECHO) == 0 and time.time()<begin+0.05:
+              start = time.time()
+          #Measuring the stop - when the echo from the signal is received
+          while GPIO.input(GPIO_ECHO) == 1 and time.time()<start+0.1:
+              stop = time.time()
+          #Calculate the distance
+          elapsed = stop - start
+          distance = elapsed * 34000/2
+          return distance
+  
+  def claw():
+      print("3. Grab")
+      pi.set_servo_pulsewidth(LC, 1100)
+      pi.set_servo_pulsewidth(RC, 2000)
+      time.sleep(2)
+      pi.set_servo_pulsewidth(LC, 2000)
+      pi.set_servo_pulsewidth(RC, 1100)
+  
+  #Function to move the car every thousandth of a second
+  def drive(offset, area):
+      #distance from right ultrasonic sensor
+      distanceR = sonar(Trigger1, Echo1)
+      #distance from left ultrasonic sensor
+      distanceL = sonar(Trigger2, Echo2)
+      #distance from front ultrasonic sensor
+      distanceF = sonar(Trigger3, Echo3)
+  
+      global marker
+  
+      if(area < 5000):
+          print("0. Looking")
+          if (marker <= 0):
+              RMforward(30.8)
+              LMbackward(30.8)
+              time.sleep(0.0001)
+              print("i turn left now")
+          elif (marker > 0):
+              RMbackward(30.8)
+              LMforward(30.8)
+              time.sleep(0.0001)
+              print("i turn right now")
+          return
+      else:
+          print("1. Object found")
+          if distanceR > 20 and distanceL > 20 and distanceF > 20:
+              #print("DRIVE MODE ENABLED")
+              if(offset>50):
+                  RMforward(40)
+                  LMforward(40)
+                  time.sleep(0.0001)
+                  RMforward(30)
+                  LMforward(40)
+                  time.sleep(0.0001)
+                  RMforward(30)
+                  LMforward(45)
+                  time.sleep(0.0001)
+                  #print("RIGHT")
+              elif(offset<-50):
+                  RMforward(40)
+                  LMforward(40)
+                  time.sleep(0.0001)
+                  RMforward(40)
+                  LMforward(30)
+                  time.sleep(0.0001)
+                  RMforward(45)
+                  LMforward(30)
+                  time.sleep(0.0001)
+                  #print("LEFT")
+              elif(offset != 0):
+                  LMforward(30)
+                  RMforward(30)
+                  time.sleep(0.0001)
+                  #print("FORWARD")
+              else:
+                  stop()
+                  #print("STOP")
+          elif (distanceL <= 20 or distanceR <= 20):   
+              if (area > 3000):
+                  print("Extra: Backing up")
+                  if (distanceL > 20):
+                      RMbackward(20)
+                      LMbackward(20)
+                      time.sleep(0.0002)
+                      RMbackward(40)
+                      LMbackward(40)
+                      time.sleep(0.0003)
+                      RMbackward(50)
+                      LMbackward(40)
+                      time.sleep(0.0001)
+                      RMbackward(60)
+                      LMbackward(40)
+                      time.sleep(0.0001)
+                  
+                  elif (distanceR > 20):
+                      RMbackward(20)
+                      LMbackward(20)
+                      time.sleep(0.0002)
+                      RMbackward(40)
+                      LMbackward(40)
+                      time.sleep(0.0003)
+                      RMbackward(40)
+                      LMbackward(50)
+                      time.sleep(0.0001)
+                      RMbackward(40)
+                      LMbackward(60)
+                      time.sleep(0.0001)
+                  
+              else:
+                  print("Wait for procedure")
+                  stop()
+          elif(distanceL > 20 and  distanceF < 8 and distanceR > 20):
+              print("2. In optimal position")
+              print("right: ", distanceR)
+              print("front: ", distanceF)
+              print("left: ", distanceL)
+              stop()
+              claw()
+          elif(8 < distanceF < 20):
+              print("Extra: Just a little closer")
+              LMforward(35)
+              RMforward(35)
+              time.sleep(0.0001)
+  
+          marker = offset
+      return
+  
+  #Function to find red (and its area) in frame and set up website visuals
+  def track_object(frame):
+      hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+      lower_red1 = np.array([0,100,30])
+      upper_red1 = np.array([10,255,255])
+      lower_red2 = np.array([160, 100, 30])
+      upper_red2 = np.array([179, 255, 255])
+  
+      mask1 = cv2.inRange(hsv, lower_red1, upper_red1)
+      mask2 = cv2.inRange(hsv, lower_red2, upper_red2)
+      mask = cv2.bitwise_or(mask1, mask2)
+  
+      mask = cv2.erode(mask, None, iterations=2)
+      mask = cv2.dilate(mask, None, iterations=2)
+  
+      contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+      offsetPos = 0
+      global area
+      area = 0
+  
+      if contours:
+          area = cv2.contourArea(max(contours, key=cv2.contourArea))
+          largest = max(contours, key=cv2.contourArea)
+          M = cv2.moments(largest)
+          if M["m00"] > 0:
+              centre_x = int(M["m10"] / M["m00"])
+              centre_y = int(M["m01"] / M["m00"])
+              offset = centre_x - CENTER_X
+              offsetPos = offset
+  
+              if abs(offset) < 30:
+                  position = "Centered"
+              elif offset < 0:
+                  position = "Left"
+              else:
+                  position = "Right"
+  
+              cv2.drawContours(frame, [largest], -1, (0, 255, 0), 2)
+              cv2.circle(frame, (centre_x, centre_y), 5, (255, 0, 0), -1)
+              cv2.putText(frame, f"Offset: {offset}({position})", (10, 30), 
+              cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
+      return frame, offsetPos, area
+  
+  #Function to generate frames for the video stream
+  def generate_frames():
+      while True:
+          frame = picam.capture_array()
+          frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+          frame, offset, area = track_object(frame)
+  
+          drive(offset, area)
+  
+          ret, buffer = cv2.imencode('.jpg', frame)
+          jpg_frame = buffer.tobytes()
+          yield (b'--frame\r\n'
+                  b'Content-Type: image/jpeg\r\n'
+                  b'Content-Length: ' + f"{len(jpg_frame)}".encode() 
+                  + b'\r\n\r\n' + 
+                  jpg_frame + b'\r\n')
+  
+  #Setting up web browser via HTML
+  @app.route('/')
+  def index():
+          return render_template_string('''
+          <html>
+              <head><title>Red Ball Tracking Stream</title></head>
+              <body>
+                  <h2>Live Tracking</h2>
+                  <img src="/video_feed">
+              </body>
+          </html>
+          ''')
+  
+  #Function to handle video feed AND robot functions
+  @app.route('/video_feed')
+  def video_feed():
+      return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+  
+  if __name__ == '__main__':
+      app.run(host='0.0.0.0', port=5000)
+  
+  GPIO.cleanup()
 ```
 
 # Bill of Materials
