@@ -1,5 +1,5 @@
 # Ball Tracking Robot
-Replace this text with a brief description (2-3 sentences) of your project. This description should draw the reader in and make them interested in what you've built. You can include what the biggest challenges, takeaways, and triumphs from completing the project were. As you complete your portfolio, remember your audience is less familiar than you are with all that your project entails!
+I made a Catmobile. Powered by Raspberry Pi and Python, it uses a camera, ultrasonic sensors, motor drivers, motors, and servos to autonomously navigate through obstacles with ease and get to the red ball, even in the dark - and when it's there, it holds onto it! Not only is this smart robot made to the highest efficiency, it's designed with silly features that make it so much more friendly!
 
 ```HTML 
 <!--- This is an HTML comment in Markdown -->
@@ -19,7 +19,7 @@ Replace this text with a brief description (2-3 sentences) of your project. This
 <iframe width="560" height="315" src="https://www.youtube.com/embed/F7M7imOVGug" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 
-  After these three weeks, I am very satisfied with how the robot turned out. 
+After these three weeks, I am very satisfied with how the robot turned out. 
 
   Since the last milestone, I 3D modeled and printed the claw and shell of my robot, and attached it using tape. I used specific measurements to appropiately organize each part, and luckily, my first print allowed each part to fit seamlessly. Using SG90 servos, I embedded more code for the claw function, and together, the robot was able to grab the ball. For the final part, I inserted a flashlight; now it was able to work in the dark. 
 
@@ -28,6 +28,33 @@ Replace this text with a brief description (2-3 sentences) of your project. This
   The main takeaways from the program were how many electrical devices - raspberry pi, breadboards, servos, motor drivers, ultrasonic sonars, and much more - and the code for running the robot work. I learned the importance of not giving up and learning from my mistakes to reiterate and improve.
 
   In the future, I hope to expand my knowledge on engineering, develop my skills, and seek electrical engineering in college.
+
+Testing the servos:
+
+```python
+
+import pigpio
+import time
+
+RC = 16
+LC = 12
+
+
+pi = pigpio.pi()
+
+while True:
+    control = input()
+    if "grab" in control:
+        pi.set_servo_pulsewidth(LC, 1100)
+        pi.set_servo_pulsewidth(RC, 2000)
+    elif "rest" in control:
+        pi.set_servo_pulsewidth(LC, 2000)
+        pi.set_servo_pulsewidth(RC, 1100)
+        pi.stop()
+        break
+
+
+```
 
 
 # Second Milestone
@@ -41,6 +68,80 @@ Replace this text with a brief description (2-3 sentences) of your project. This
 
   Before my final milestone, now that it's prepared for a later modification, I will work on my modification and putting in my best effort to give life to my robot.
 
+Testing the sonars:
+
+```python
+
+import RPi.GPIO as GPIO
+import time
+
+GPIO.setmode(GPIO.BCM)
+Echo1 = 26
+Trigger1 = 21
+Echo2 = 2
+Trigger2 = 3
+Echo3 = 9
+Trigger3 = 10
+
+def sonar (GPIO_Trigger,GPIO_ECHO):
+    start=0
+    stop=0
+    distance = 1000
+    GPIO.setup(GPIO_Trigger, GPIO.OUT)
+
+    GPIO.setup(GPIO_ECHO, GPIO.IN)
+
+    GPIO.output(GPIO_Trigger, False)
+    time.sleep(0.01)
+
+    while distance > 5:
+        GPIO.output(GPIO_Trigger, True)
+        time.sleep(0.00001)
+        GPIO.output(GPIO_Trigger, False)
+        begin = time.time()
+        while GPIO.input(GPIO_ECHO) == 0 and time.time()<begin+0.05:
+            start = time.time()
+        while GPIO.input(GPIO_ECHO) == 1 and time.time()<start+0.1:
+            stop = time.time()
+        elapsed = stop - start
+        distance = elapsed * 34000/2
+        return distance
+
+for i in range(1,200):
+    distance = sonar(Trigger1, Echo1)
+    print("right: ", distance)
+    distance = sonar(Trigger3, Echo3)
+    print("front: ", distance)
+    distance = sonar(Trigger2, Echo2)
+    print("left: ", distance)
+    print("\n")
+    time.sleep(0.5)
+
+```
+
+Testing the camera:
+
+```python
+
+#!/usr/bin/python3
+import time
+
+from picamera2 import Picamera2
+from picamera2.encoders import H264Encoder
+from picamera2.outputs import FfmpegOutput
+
+picam2 = Picamera2()
+video_config = picam2.create_video_configuration()
+picam2.configure(video_config)
+
+encoder = H264Encoder(10000000)
+output = FfmpegOutput('test.mp4', audio=True)
+
+picam2.start_recording(encoder, output)
+time.sleep(10)
+picam2.stop_recording()
+
+```
 
 # First Milestone
 
@@ -52,6 +153,119 @@ Replace this text with a brief description (2-3 sentences) of your project. This
 
   The current stage of my robot is that while its base/shell is constructed, I wired a Raspberry Pi to a motor driver module through female to male connectors via a breadboard in the middle, which, through code, allows me to control the movement of the robot's wheels. When running the code through VS Code, the robot remains at rest unless acted upon; therefore, I can write certain inputs into the terminal that give me full control of the robot's direction. Separately, I worked on flickering LED lights in order to test the functionality of my Raspberry Pi and deepen my knowledge on its process. 
 
+Testing the LEDs:
+
+```python
+
+  import RPi.GPIO as GPIO
+  import time
+  
+  leds_number = 18
+  GPIO.setmode(GPIO.BCM)
+  
+  def flicker(leds_number):
+      GPIO.setup(leds_number, GPIO.OUT)
+      print("LED On")
+      GPIO.output(leds_number,GPIO.HIGH)
+      time.sleep(0.5)
+      print ("Led Off")
+      GPIO.output(leds_number, GPIO.LOW)
+      time.sleep(0.5)
+  
+  for i in range (10):
+      flicker(leds_number)
+      leds_number = 21
+      flicker(leds_number)
+      leds_number = 26
+      flicker(leds_number)
+      leds_number = 18
+
+```
+
+Testing the motors:
+
+```python
+
+import RPi.GPIO as GPIO
+import time
+
+# Define GPIO pins for motor
+# LMC - Left Motor clockwise, RMCC - Right Motor Counter-cloclwise
+LMCC = 15
+LMC = 20
+RMCC = 6
+RMC = 19
+
+#Turn motors off
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+for pin in [LMCC, LMC, RMCC, RMC]:
+    GPIO.setup(pin, GPIO.OUT)
+
+# PWM at 100 Hz
+PWM1A = GPIO.PWM(LMCC, 100)
+PWM1B = GPIO.PWM(LMC, 100)
+PWM2A = GPIO.PWM(RMCC, 100)
+PWM2B = GPIO.PWM(RMC, 100)
+
+PWM1A.start(0)
+PWM1B.start(0)
+PWM2A.start(0)
+PWM2B.start(0)
+
+def RMforward(speed=100):
+    PWM1A.ChangeDutyCycle(0)
+    PWM1B.ChangeDutyCycle(speed)
+
+def RMbackward(speed=100):
+    PWM1A.ChangeDutyCycle(speed)
+    PWM1B.ChangeDutyCycle(0)
+
+def LMforward(speed=100):
+    PWM2A.ChangeDutyCycle(0)
+    PWM2B.ChangeDutyCycle(speed)
+
+def LMbackward(speed=100):
+    PWM2A.ChangeDutyCycle(speed)
+    PWM2B.ChangeDutyCycle(0)
+
+def stop():
+    for pwm in [PWM1A, PWM1B, PWM2A, PWM2B]:
+        pwm.ChangeDutyCycle(0)
+
+while(1):
+    control = input()
+    if "forward" in control:
+        LMforward(50)
+        RMforward(50)
+        time.sleep(0.5)
+        stop()
+    elif "backward" in control:
+        RMbackward(40)
+        LMbackward(40)
+        time.sleep(0.5)
+        stop()
+
+    elif "left" in control:
+        LMbackward(40)
+        RMforward(40)
+        time.sleep(0.5)
+        stop()
+
+    elif "right" in control:
+        RMbackward(40)
+        LMforward(40)
+        time.sleep(0.5)
+        stop()
+        
+    elif "leave" in control:
+        break
+
+
+GPIO.cleanup()
+
+```
+
   I've faced harsh technical challenges that required several hours of debugging in order to work around them. For instance, I struggled with establishing a connection between my Raspberry Pi and computer as a result of my computer's inability to connect to a network wirelessly. Therefore, I connected it to an ethernet cable; however, I couldn't find out which network it belonged to. Because the Raspberry Pi requires a wireless connection (rather than a wired one, which would not be sustainable for when I complete the robot), I manually logged into different networks through its desktop mode to test whether it could establish a connection. 
 
   My hope for this project is to expand beyond the blueprint and implement my own modifications to bring the robot to life. 
@@ -60,24 +274,42 @@ Replace this text with a brief description (2-3 sentences) of your project. This
 
 ![Screenshot 2025-07-03 133130](https://github.com/user-attachments/assets/e93e210a-6a49-411a-a349-890bc4a049d1)
 
-Base foundation
+```
+Base Foundation
+
+```
+
 
 ![Screenshot 2025-07-03 133205](https://github.com/user-attachments/assets/f7333f64-8649-4047-a288-508dd6124013)
 
-Attachable Back end
+```
+
+Attachable Back End
+
+```
  
 ![Screenshot 2025-07-03 133142](https://github.com/user-attachments/assets/3839d2cd-ea21-49de-8103-2c415dcaa9a0)
 
+```
+
 Lid
+
+```
 
 ![Screenshot 2025-07-03 133223](https://github.com/user-attachments/assets/7f494a91-536b-40ab-a532-1a2c3e6c1aed)
 
+```
+
 Claw
 
-# Code
+```
+
+# Final Code
 Here's where you'll put your code. The syntax below places it into a block of code. Follow the guide [here]([url](https://www.markdownguide.org/extended-syntax/)) to learn how to customize it to your project needs. 
 
-```from flask import Flask, Response, render_template_string
+```python
+
+  from flask import Flask, Response, render_template_string
   from picamera2 import Picamera2
   from datetime import datetime
   import RPi.GPIO as GPIO
@@ -387,6 +619,7 @@ Here's where you'll put your code. The syntax below places it into a block of co
       app.run(host='0.0.0.0', port=5000)
   
   GPIO.cleanup()
+
 ```
 
 # Bill of Materials
