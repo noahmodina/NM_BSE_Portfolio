@@ -1,5 +1,4 @@
 # Ball Tracking Robot
-```python
 I made a Catmobile.
 
 Powered by Raspberry Pi and Python,
@@ -7,7 +6,6 @@ it uses a camera, ultrasonic sensors, motor drivers, motors, and servos to auton
 navigate through obstacles with ease and get to the red ball, even in the dark - and when it's there,
 it holds onto it! Not only is this smart robot made to the highest efficiency,
 it's designed to emulate a batmobile but as a cat instead.
-```
 
 | **Engineer** | **School** | **Area of Interest** | **Grade** |
 |:--:|:--:|:--:|:--:|
@@ -19,7 +17,7 @@ it's designed to emulate a batmobile but as a cat instead.
   
 # Final Milestone
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/F7M7imOVGug" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/gWVPSNKiwb0?si=hqRemmVmZ3FGoBW6" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 
 After these three weeks, I am very satisfied with how the robot turned out. 
@@ -623,9 +621,6 @@ Claw
   GPIO.cleanup()
 
 ```
-
-Here's where you'll list the parts in your project. To add more rows, just copy and paste the example rows below.
-Don't forget to place the link of where to buy each component inside the quotation marks in the corresponding row after href =. Follow the guide [here]([url](https://www.markdownguide.org/extended-syntax/)) to learn how to customize this to your project needs. 
 
 
 # Bill of Materials
