@@ -1,5 +1,8 @@
-# Ball Tracking Robot
-I made a Catmobile.
+# I MADE A CATMOBILE
+
+![Headstone Image](IMG_0930 (1).png)
+
+In other words, a ball-tracking robot with the shell of cat.
 
 Powered by Raspberry Pi and Python,
 it uses a camera, ultrasonic sensors, motor drivers, motors, and servos to autonomously
@@ -11,9 +14,8 @@ it's designed to emulate a batmobile but as a cat instead.
 |:--:|:--:|:--:|:--:|
 | Noah M | Gretchen Whitney High School | Electrical Engineering | Incoming Senior
 
-**Replace the BlueStamp logo below with an image of yourself and your completed project. Follow the guide [here](https://tomcam.github.io/least-github-pages/adding-images-github-pages-site.html) if you need help.**
+Let's start with its current state, as we move down and see how I got there.
 
-![Headstone Image](IMG_0930 (1).png)
   
 # Final Milestone
 
